@@ -8,7 +8,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "ci:lint": "turbo run ci:lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "e2e": "turbo run e2e"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
