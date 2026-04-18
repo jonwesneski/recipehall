@@ -46,9 +46,18 @@ export const IngredientsTextArea = forwardRef<
   const { ingredients, ingredientIds, addIngredient, removeIngredient } =
     useRecipeStepIngredientsStore(props.stepId)
 
-  const handleNewRow = (ingredientId: string) => {
+  const handleNewRow = (_ingredientId: string) => {
+    const prevSize = itemRefs.current.size
     addIngredient(props.stepId)
-    handleArrowDown(ingredientId)
+    withRetry(() => {
+      if (itemRefs.current.size > prevSize) {
+        const row = [...itemRefs.current.values()].at(-1)
+        row?.focus()
+        row?.setSelectionRange(0, 0)
+        return false
+      }
+      return true
+    }, 8)
   }
 
   const handleRemove = (ingredientId: string) => {
