@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   HttpCode,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
   Post,
   Req,
@@ -20,6 +22,8 @@ import { GoogleAuthDto, GoogleOauthGuard, JwtRefreshGuard } from './guards';
   path: 'auth',
 })
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+
   constructor(
     private authService: AuthService,
     private configService: ConfigService,
@@ -86,8 +90,13 @@ export class AuthController {
       picture: '',
     };
 
-    const { tokens } = await this.authService.validateGoogleUser(googleUser);
-    return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
+    try {
+      const { tokens } = await this.authService.validateGoogleUser(googleUser);
+      return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
+    } catch (err) {
+      this.logger.error(`[e2e-login] validateGoogleUser failed: ${(err as Error).message}`, (err as Error).stack);
+      throw new InternalServerErrorException((err as Error).message);
+    }
   }
 
   @Get('google')

@@ -16,8 +16,9 @@ setup('authenticate as e2e user', async ({ browser }) => {
   });
 
   if (!res.ok()) {
+    const body = await res.text().catch(() => '(no body)');
     throw new Error(
-      `e2e-login failed: ${res.status()} — is the API running with E2E_TESTING=true?`,
+      `e2e-login failed: ${res.status()} — ${body}`,
     );
   }
 

@@ -46,8 +46,8 @@ export const IngredientsTextArea = forwardRef<
   const { ingredients, ingredientIds, addIngredient, removeIngredient } =
     useRecipeStepIngredientsStore(props.stepId)
 
-  const handleNewRow = (ingredientId: string) => {
-    addIngredient(ingredientId)
+  const handleNewRow = (_ingredientId: string) => {
+    addIngredient(props.stepId)
   }
 
   const handleRemove = (ingredientId: string) => {

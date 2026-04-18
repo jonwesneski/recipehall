@@ -8,12 +8,13 @@ dotenv.config({ path: path.join(__dirname, '.env.e2e') });
 
 const TMP_DIR = path.join(__dirname, '.tmp');
 const CONTAINER_ID_FILE = path.join(TMP_DIR, 'container-id.txt');
+const E2E_DB_PORT = 15432;
 
 export default async function globalSetup() {
   console.log('\n[e2e] Starting PostgreSQL testcontainer...');
 
   const container = await new GenericContainer('postgres:13')
-    .withExposedPorts(5432)
+    .withExposedPorts({ container: 5432, host: E2E_DB_PORT })
     .withEnvironment({
       POSTGRES_USER: 'prisma',
       POSTGRES_PASSWORD: 'prisma',
@@ -24,7 +25,7 @@ export default async function globalSetup() {
     )
     .start();
 
-  process.env.DATABASE_URL = `postgresql://prisma:prisma@${container.getHost()}:${container.getMappedPort(5432)}/recipes-db?schema=public`;
+  process.env.DATABASE_URL = `postgresql://prisma:prisma@${container.getHost()}:${E2E_DB_PORT}/recipes-db?schema=public`;
   console.log(`[e2e] DB ready at: ${process.env.DATABASE_URL}`);
 
   // Small buffer for the container to be fully ready

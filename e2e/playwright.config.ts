@@ -38,9 +38,8 @@ export default defineConfig({
 
   webServer: [
     {
-      // API started with E2E_TESTING=true so the /auth/e2e-login endpoint is active.
-      // Do NOT set env here: Playwright inherits process.env at spawn time (after
-      // globalSetup runs), so DATABASE_URL will already be the live testcontainer URL.
+      // DATABASE_URL from .env.e2e points to the fixed-port testcontainer (15432).
+      // globalSetup binds the container to that port so the URL is static.
       command: 'PORT=3001 pnpm --filter api start:e2e',
       // Use /status (simple 200) not /health (runs DB check → 503 if DB isn't ready yet)
       url: `${API_BASE_URL}/status`,

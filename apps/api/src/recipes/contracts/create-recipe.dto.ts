@@ -272,27 +272,27 @@ export class CreateRecipeDto
   @IsNullable()
   @IsEnum(CuisineType)
   @ApiProperty({ enum: CuisineType, nullable: true })
-  cuisine?: CuisineType | null;
+  cuisine: CuisineType | null;
   @IsNullable()
   @IsEnum(MealType)
   @ApiProperty({ enum: MealType, nullable: true })
-  meal?: MealType | null;
+  meal: MealType | null;
   @IsNullable()
   @IsEnum(DishType)
   @ApiProperty({ enum: DishType, nullable: true })
-  dish?: DishType | null;
+  dish: DishType | null;
   @IsArray()
   @IsEnum(DietaryType, { each: true })
   @ApiProperty({ enum: DietaryType, isArray: true })
-  diets?: DietaryType[];
+  diets: DietaryType[];
   @IsArray()
   @IsEnum(ProteinType, { each: true })
   @ApiProperty({ enum: ProteinType, isArray: true })
-  proteins?: ProteinType[];
+  proteins: ProteinType[];
   @IsNullable()
   @IsEnum(DifficultyLevelType)
   @ApiProperty({ enum: DifficultyLevelType, nullable: true })
-  difficultyLevel?: DifficultyLevelType | null;
+  difficultyLevel: DifficultyLevelType | null;
   @IsBoolean()
   @ApiProperty({ type: Boolean })
   isPublic: boolean;
