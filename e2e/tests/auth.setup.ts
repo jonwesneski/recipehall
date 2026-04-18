@@ -37,6 +37,7 @@ setup('authenticate as e2e user', async ({ browser }) => {
       path: '/',
       httpOnly: true,
       secure: false,
+      sameSite: 'Lax',
     },
     {
       name: 'access_token',
@@ -45,6 +46,7 @@ setup('authenticate as e2e user', async ({ browser }) => {
       path: '/',
       httpOnly: true,
       secure: false,
+      sameSite: 'Lax',
     },
   ]);
 

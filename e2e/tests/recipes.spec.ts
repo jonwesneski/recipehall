@@ -13,19 +13,26 @@ test('create a recipe', async ({ authedPage: page }) => {
   // Fill step 1: two ingredients and a 3-word instruction
   const step = page.locator('[data-testid="step-row"]').first();
 
-  const firstIngredient = step.locator('textarea[data-testid="ingredient-row"]').first();
+  const firstIngredient = step
+    .locator('textarea[data-testid="ingredient-row"]')
+    .first();
   await firstIngredient.click();
   await firstIngredient.pressSequentially('2 cups flour');
   await firstIngredient.press('Enter');
 
-  const secondIngredient = step.locator('textarea[data-testid="ingredient-row"]').nth(1);
-  await secondIngredient.pressSequentially('1 tsp salt');
+  const secondIngredient = step
+    .locator('textarea[data-testid="ingredient-row"]')
+    .nth(1);
+  await secondIngredient.pressSequentially('1 teaspoons salt');
 
   await page.locator('textarea[name="instructions"]').fill('Mix it well');
 
   // Submit as a private recipe
   await page.getByRole('button', { name: /save private/i }).click();
 
-  // On success the app navigates to the new recipe's detail page
-  await expect(page).toHaveURL(/\/recipes\/[a-z0-9-]+/);
+  // On success the app navigates to the new recipe's detail page.
+  // waitForURL (event-based) handles Next.js 15's deferred URL commit better
+  // than the polling-based toHaveURL, and the RSC fetch for the detail page
+  // can be slow on a cold testcontainer DB.
+  await page.waitForURL(/\/recipes\/[a-z0-9-]+/, { timeout: 15000 });
 });
