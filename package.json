@@ -15,5 +15,10 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
     "turbo": "^2.5.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "eslint": "9.36.0"
+    }
   }
 }
