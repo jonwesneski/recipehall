@@ -11,6 +11,7 @@
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:e2e": "cross-env E2E_TESTING=true nest start",
     "swagger:only": "cross-env SWAGGER_ONLY=true nest start",
     "ci:lint": "eslint \"{src,test}/**/*.ts\"",
     "lint": "pnpm ci:lint --fix",

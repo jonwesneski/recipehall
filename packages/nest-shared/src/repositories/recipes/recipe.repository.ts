@@ -113,7 +113,7 @@ export class RecipeRepository {
     const recipe = await this.prisma.recipe.findFirstOrThrow({
       where: {
         id,
-        isPublic: true,
+        OR: [{ isPublic: true }, { userId: requestedUserId }],
       },
       include: {
         ...RecipeInclude.include,

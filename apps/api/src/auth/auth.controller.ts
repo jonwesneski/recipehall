@@ -1,7 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
   Post,
   Req,
   Res,
@@ -11,12 +15,15 @@ import { ConfigService } from '@nestjs/config';
 import { JwtGoogleType } from '@repo/zod-schemas';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { E2eLoginDto } from './dtos/e2e-login.dto';
 import { GoogleAuthDto, GoogleOauthGuard, JwtRefreshGuard } from './guards';
 
 @Controller({
   path: 'auth',
 })
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+
   constructor(
     private authService: AuthService,
     private configService: ConfigService,
@@ -67,6 +74,29 @@ export class AuthController {
       httpOnly: true,
       //expires: new Date(jwtDecode(googleUser.tokens.accessToken).exp)
     });
+  }
+
+  @Post('e2e-login')
+  async e2eLogin(@Body() body: E2eLoginDto) {
+    if (process.env.E2E_TESTING !== 'true') {
+      throw new NotFoundException();
+    }
+
+    const googleUser: GoogleAuthDto = {
+      provider: 'google',
+      providerId: 'e2e-test',
+      email: body.email,
+      name: body.name,
+      picture: '',
+    };
+
+    try {
+      const { tokens } = await this.authService.validateGoogleUser(googleUser);
+      return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
+    } catch (err) {
+      this.logger.error(`[e2e-login] validateGoogleUser failed: ${(err as Error).message}`, (err as Error).stack);
+      throw new InternalServerErrorException((err as Error).message);
+    }
   }
 
   @Get('google')

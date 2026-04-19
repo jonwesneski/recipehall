@@ -8,11 +8,17 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "ci:lint": "turbo run ci:lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "e2e": "turbo run e2e"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
     "turbo": "^2.5.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "eslint": "9.36.0"
+    }
   }
 }

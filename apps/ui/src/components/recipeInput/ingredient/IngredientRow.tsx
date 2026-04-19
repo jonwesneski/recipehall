@@ -149,6 +149,7 @@ export const IngredientRow = forwardRef<
     switch (event.key) {
       case 'Enter':
         event.preventDefault()
+        setDropdownMode(null)
         props.onEnterPressed(props.ingredientId)
         break
       case 'Backspace':
@@ -158,10 +159,12 @@ export const IngredientRow = forwardRef<
         break
       case 'ArrowUp':
         event.preventDefault()
+        setDropdownMode(null)
         props.onArrowUp(props.ingredientId)
         break
       case 'ArrowDown':
         event.preventDefault()
+        setDropdownMode(null)
         props.onArrowDown(props.ingredientId)
         break
       default:
